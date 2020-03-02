@@ -3,8 +3,8 @@
 from ev3dev2.motor import MoveSteering, OUTPUT_A, OUTPUT_D
 from ev3dev2.sensor import INPUT_2
 from ev3dev2.sensor.lego import GyroSensor
-from gyro_steer import reset_gyro, turn90_left
-from straight_gyro import forward_with_time
+from gyroSteer import reset_gyro, turn90_left
+from straight import forward_with_time
 
 
 def turn180(steer_pair_name, gyro_sensor_name):

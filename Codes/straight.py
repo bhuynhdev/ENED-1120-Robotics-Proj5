@@ -5,7 +5,7 @@ from ev3dev2.sensor import INPUT_2
 from ev3dev2.sensor.lego import GyroSensor
 from hello import debug_print
 from time import time, sleep
-from gyro_steer import reset_gyro, turn90_left
+from gyroSteer import reset_gyro, turn90_left
 
 
 """def forward1(steer_pair_name, gyro_sensor_name):
