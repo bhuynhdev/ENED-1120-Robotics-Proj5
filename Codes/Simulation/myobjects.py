@@ -156,13 +156,13 @@ class Robot:
         Determine quad number from coordinates:
         """
         x, y = self.head
-        if 8 <= x <= 53:
-            if 8 <= y <= 53:
+        if 7 <= x <= 53:
+            if 7 <= y <= 53:
                 return 0  # means quad A
             if 55 <= y <= 102:
                 return 2  # 2 means quad C
         elif 55 <= x <= 102:
-            if 8 <= y <= 53:
+            if 7 <= y <= 53:
                 return 1  # means quad B
             if 55 <= y <= 102:
                 return 3  # 2 means quad D
