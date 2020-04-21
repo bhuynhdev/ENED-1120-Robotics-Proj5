@@ -49,6 +49,12 @@ BTMLEFT_INDEX = {UP: 2, DOWN: 0, LEFT: 3, RIGHT: 1}
 # because the matplot Oy is (-12, 120), but 2d Array column is (0, 132)
 DISPLACEMENT = 12
 
+# Robot's length
+LENGTH = 6
+HLENGTH = 3 # Half-length = distance between center and head
+WIDTH = 4
+
+
 # HOME locations: Dont add DISPLACEMENT because these locations do not concern
 # the digital board in anyway
 HOME = [(6, -6), (102, -6), (6, 114), (102, 114)]
@@ -56,6 +62,10 @@ HOME = [(6, -6), (102, -6), (6, 114), (102, 114)]
 # Quads' starting and ending locations:
 QUAD_START = [(11, 7), (59, 7), (49, 101), (97, 101)]
 QUAD_END = [(9, 53), (57, 53), (51, 55), (99, 55)]
+
+# Quads' x and y limit
+QUAD_Y_LIMIT = [(7, 53), (7, 53), (55, 103), (55, 103)]
+QUAD_X_LIMIT = [(7, 53), (55, 103), (7, 53), (55, 103)]
 
 # Quad's starting direction:
 QUAD_START_DIRCT = [UP, UP, DOWN, DOWN]

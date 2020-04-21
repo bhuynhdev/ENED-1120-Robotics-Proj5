@@ -75,19 +75,19 @@ class Backend:
         when the box is picked up
         """
         for index, box in enumerate(self.box_list):
-            if box.get_bottomleft() == btmleft_of_box_to_remove:
+            if box.bottomleft == btmleft_of_box_to_remove:
                 del self.box_list[index]
-                print(f"A box at {box.get_bottomleft()} deleted")
+                print(f"A box at {box.bottomleft} deleted")
                 break
-            if add_tuple(box.get_bottomleft(), (1, 0)) == btmleft_of_box_to_remove:
+            if add_tuple(box.bottomleft, (1, 0)) == btmleft_of_box_to_remove:
                 del self.box_list[index]
                 print(
-                    f"A box at {add_tuple(box.get_bottomleft(), (1, 0))} deleted")
+                    f"A box at {add_tuple(box.bottomleft, (1, 0))} deleted")
                 break
-            if add_tuple(box.get_bottomleft(), (-1, 0)) == btmleft_of_box_to_remove:
+            if add_tuple(box.bottomleft, (-1, 0)) == btmleft_of_box_to_remove:
                 del self.box_list[index]
                 print(
-                    f"A box at {add_tuple(box.get_bottomleft(), (-1, 0))} deleted")
+                    f"A box at {add_tuple(box.bottomleft, (-1, 0))} deleted")
                 break
 
     def digitalize_boxes(self):
@@ -95,7 +95,7 @@ class Backend:
         Assigning 10s indicicating box edge onto the 2D array
         """
         for box in self.box_list:
-            bottomleft = box.get_bottomleft()
+            bottomleft = box.bottomleft
             if bottomleft[1] in (12, 36, 60, 84):
                 x, y = bottomleft[0], bottomleft[1] + DISPLACEMENT
                 # Assign the box's edge with 10s
@@ -119,8 +119,8 @@ class Backend:
         Assign 5s indicating the robot onto the 2d Array
         """
         # whole_rectangle = self.robot.get_whole_rectangle_coor()
-        btmleft = self.robot.get_bottomleft()
-        direction = self.robot.get_direction()
+        btmleft = self.robot.bottomleft
+        direction = self.robot.direction
         x_val, y_val = btmleft[0], btmleft[1] + DISPLACEMENT
         if direction in (UP, DOWN):
             for x in range(x_val, x_val + 4, 1):

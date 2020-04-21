@@ -37,8 +37,8 @@ class InvisibleArtist:
         """
         body_patches = []
         # Draw vertical rectangle if robot is in vertical direction
-        direction = robot.get_direction()
-        bottomleft_body = robot.get_bottomleft()
+        direction = robot.direction
+        bottomleft_body = robot.bottomleft
         if direction in (UP, DOWN):
             bottomleft_body = add_tuple(robot.center, (-2, -3))
             rect = patches.Rectangle(
@@ -77,7 +77,7 @@ class InvisibleArtist:
         Generate patches for robot's other accessories, including
         ultrasonic field and box (if is being stored)
         """
-        direction = robot.get_direction()
+        direction = robot.direction
         # Create ultrasonic field patches
         ultra_btmleft = (robot.ultrasonic[0] if direction in (RIGHT, DOWN)
                     else robot.ultrasonic[1])
@@ -124,7 +124,7 @@ class InvisibleArtist:
         """
         box_patches = []
         for box in box_list:
-            bottomleft = box.get_bottomleft()
+            bottomleft = box.bottomleft
             square = patches.Rectangle(
                 bottomleft, 4, 4, linewidth=1, facecolor="lightgrey",
                 edgecolor="red" if box.barcode == self.target_barcode else "black")
