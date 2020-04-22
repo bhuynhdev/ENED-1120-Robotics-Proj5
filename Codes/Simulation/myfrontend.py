@@ -40,12 +40,12 @@ class InvisibleArtist:
         direction = robot.direction
         bottomleft_body = robot.bottomleft
         if direction in (UP, DOWN):
-            bottomleft_body = add_tuple(robot.center, (-2, -3))
+            bottomleft_body = add_tuple(robot.center, (-int(WIDTH / 2), -HLENGTH))
             rect = patches.Rectangle(
                 bottomleft_body, 4, 6, linewidth=1, edgecolor='black', facecolor='orange')
         # Draw horizontal rectangle if robot is in horizontal direction
         else:
-            bottomleft_body = add_tuple(robot.center, (-3, -2))
+            bottomleft_body = add_tuple(robot.center, (-HLENGTH, -int(WIDTH / 2)))
             rect = patches.Rectangle(
                 bottomleft_body, 6, 4, linewidth=1, edgecolor='black', facecolor='orange')
         body_patches.append(rect)

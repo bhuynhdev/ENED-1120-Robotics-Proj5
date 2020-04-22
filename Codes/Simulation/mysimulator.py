@@ -28,7 +28,7 @@ class Simulator:
         # Set starting position for robot
         self.robot.set_robot_start(start_pos)
         self.target_code = correct_barcode
-        
+
     def robot_forward(self, numsteps):
         """
         Make robot step forward with visual representation
@@ -244,7 +244,7 @@ class Simulator:
         current_row = current_point[1]
         current_scan_direction = self.get_scanning_direction()
     
-        if current_row not in (53, 55): # Not in quad-end positions
+        if current_row not in (53, 55): # If not in quad-end positions
             if current_row in (7, 31, 77, 101):
                 step_to_take = 22
             elif current_row in (29, 79):
@@ -318,7 +318,7 @@ class Simulator:
             # Make first search
             self.search_shelf()
             print(f"Current quad is: {self.robot.quad}")
-            # Continuously do subsequenct search if necessary
+            # Continuously do subsequenct searches if necessary
             while self.robot.storage_empty and num_quad_finished < 4:
                 next_point, next_scan_direction = self.where_to_go_next()
                 print(next_point, next_scan_direction)
@@ -333,7 +333,7 @@ class Simulator:
                     num_quad_finished += 1
                     print(f"Finished quad {self.robot.quad}")
 
-            # If carrying a box, initiate go_home_seq
+            # If carrying a box, initiate go_home sequence
             if not self.robot.storage_empty:
                 self.go_home(starting_position)
                 game_finished = True

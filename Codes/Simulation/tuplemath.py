@@ -5,7 +5,7 @@ for working with robot's directions and navigation
 
 def add_tuple(tuple1, tuple2):
     """
-    Tuple arithmetic addition
+    Tuple arithmetic addition. Example: (1,0) + (2,3) = (3,3)
     """
     return tuple(x + y for x, y in zip(tuple1, tuple2))
 

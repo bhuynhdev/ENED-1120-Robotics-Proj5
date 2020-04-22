@@ -8,7 +8,7 @@ from mysimulator import *
 
 
 if __name__ == "__main__":
-    target_barode = [1, 1, 1, 1]
+    target_barode = [1,1,1,1]
     start_pos = HOME[1]
     game = Simulator(start_pos, target_barode)
 

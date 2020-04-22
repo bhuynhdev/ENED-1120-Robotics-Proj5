@@ -8,7 +8,7 @@ from myconstants import *
 
 class Robot:
     """Robot class"""
-    # This is actually half-length, meaning just length from center to head
+    # Half-Length = length from center to head
     HLENGTH = 3 # Half length
     LENGTH = 2 * HLENGTH
     # Width is full width, 4 inch from left side to right side
@@ -26,7 +26,7 @@ class Robot:
         # A robot has a center and a head
         # Center indicates its position on board, and Head incates direction
         # Center and Head is always same row or same column
-        # Head = Center + Direction * Length
+        # Head = Center + Direction * Half-Length
         self.center = (0, 0)
         self.head = add_tuple(self.center, mult_tuple(UP, HLENGTH))
 
