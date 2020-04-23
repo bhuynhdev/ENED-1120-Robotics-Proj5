@@ -28,7 +28,7 @@ CLOCKWISE = {UP: RIGHT, RIGHT: DOWN, DOWN: LEFT, LEFT: UP}
 COUNTER_CLOCKWISE = {UP: LEFT, LEFT: DOWN, DOWN: RIGHT, RIGHT: UP}
 
 # BARCODE LIST: 4 barcode types. 1 = Black, 2 = White
-BARCODE = [(1, 2, 2, 2), (1, 2, 1, 2), (1, 1, 2, 2), (1, 2, 2, 1)]
+BARCODE = [(1, 2, 2, 2)]#, (1, 2, 1, 2), (1, 1, 2, 2), (1, 2, 2, 1)]
 
 
 # BTMLEFT_INDEX:

@@ -137,45 +137,14 @@ class Simulator:
         self.frontend.render_surface(self.robot)
         plt.pause(0.4)
 
-    # More complicated and full-flex sequences of simulation below
-    def backtrack_scanning(self):
+    def scan_full_barcode(self):
         """
-        Backtrack scanning algorithm when robot has met a box
+        4-step sequence to scan the 4 color-bit of a barcode
         """
-        
-        # After colliding with the box, the robot will step backward 1 step at a time
-        # while also turning to check if the box is still there.
-        # After some back steps, the box is not detected any more, meaning the robot
-        # has reached the leftmost edge of the box.
-        # Then it begins scanning in the scanning direction
-
-        # Backward until box is no longer seen
-        backward_steps = 0 # steps count to control how long robot has backwarded
-        while self.robot.ultrasonic_detection(self.backend.board):
-            backward_steps += 1
-            self.robot_turn_right()
-            self.robot_backward(1)
-            self.robot_turn_left()
-            plt.pause(0.02)                     
-        # When the box is no longer seen, the ultrasonic field is at the box's
-        # leftmost edge. Now turn right, preparing to forward to scanning position
-        self.robot_turn_right()
-        # Visual Bug: If robot is going RIGHT, needs to forward 4 steps for
-        # the colorsensor to align with the first barcode bit
-        # If robot is going LEFT, only needs 3 steps
-        # ALso, if it needs to go backward more than 4 steps, there are 2 boxes
-        # next to each other
-        if backward_steps > 3:
-            self.robot_forward(8 if self.robot.direction == RIGHT else 7)
-        else:
-            self.robot_forward(4 if self.robot.direction == RIGHT else 3)
-        self.robot_turn_left()
-        plt.pause(0.05)
-
         # Start scanning the 4 bits of the bardcode
         full_code = []
         for _ in range(4):
-            temp_bit = self.robot.scan_barcode(self.backend.board)
+            temp_bit = self.robot.scan_color_bit(self.backend.board)
             if temp_bit > 0:
                 full_code.append(temp_bit)
             else:
@@ -192,11 +161,71 @@ class Simulator:
             self.robot_turn_left()
         return full_code
 
+    # More complicated and full-flex sequences of simulation below
+    def backtrack_scanning(self):
+        """
+        Backtrack scanning algorithm when robot has met a box
+        """
+        scanning_direction = self.get_scanning_direction()
+        # After colliding with the box, the robot will step backward 1 step at a time
+        # while also turning to check if the box is still there.
+        # After some back steps, the box is not detected any more, meaning the robot
+        # has reached the leftmost edge of the box.
+        # Then it begins scanning in the scanning direction
+
+        # Backward until box is no longer seen
+        backward_steps = 0 # steps count to control how long robot has backwarded
+        while self.robot.ultrasonic_detection(self.backend.board):
+            backward_steps += 1
+            self.robot_turn_right()
+            self.robot_backward(1)
+            self.robot_turn_left()
+            plt.pause(0.02)
+        print(f"Back steps: {backward_steps}")                
+          
+        # If it needs to go backward more than 4 steps, there are 2 boxes
+        # next to each other: The "adjacent boxes" problem
+        # Therefore, activate "forward-tracking scan" sequence
+        if backward_steps > 4:
+            print("Adjacent boxes found")
+            self.robot_turn_right()
+            self.robot_forward(10)
+            self.robot_turn_left()
+            # Forward till no longer see box
+            while self.robot.ultrasonic_detection(self.backend.board):
+                self.robot_turn_right()
+                self.robot_forward(1)
+                self.robot_turn_left()
+                plt.pause(0.02)
+            # When the box is no longer seen, the ultrasonic field is at the box's
+            # rightmost edge. Now turn right, preparing to backward to scanning position
+            # Visual Bug: If robot is going RIGHT, needs to backward 3 steps for
+            # the colorsensor to align with the first barcode bit of box II
+            # If robot is going LEFT, needs 4 steps instead
+            self.robot_turn_right()
+            self.robot_backward(3 if scanning_direction == RIGHT else 4)
+        else:
+            # If there is one box isolated, there are no concerns
+            # When the box is no longer seen, the ultrasonic field is at the box's
+            # leftmost edge. Now turn right, preparing to forward to scanning position
+            self.robot_turn_right()
+            # Visual Bug: If robot is going RIGHT, needs to forward 4 steps for
+            # the colorsensor to align with the first barcode bit
+            # If robot is going LEFT, only needs 3 steps
+            self.robot_forward(4 if scanning_direction == RIGHT else 3)
+        self.robot_turn_left()
+        plt.pause(0.05)
+
+        full_code = self.scan_full_barcode()
+        print(f"Barcode result: {full_code}")
+        plt.pause(0.5)
+        return full_code
+
     def search_shelf(self):
         """
         In this sequence, the robot scan a whole shelf line to search the right box,
-        turning inside every 4 inch to check for box.
-        Go into hall way after finished searching the shelf.
+        turning inside every 4 inches to check for box.
+        Go into hallway after finished searching the shelf.
         Invoke this sequence only when robot has been near a shelf,
         facing towards the boxes
         """
@@ -324,7 +353,7 @@ class Simulator:
 
             # Make first search
             self.search_shelf()
-            print(f"Current quad is: {self.robot.quad}")
+            #print(f"Current quad is: {self.robot.quad}")
             # Continuously do subsequenct searches if necessary
             while self.robot.storage_empty and num_quad_finished < 4:
                 next_point, next_scan_direction = self.where_to_go_next()
@@ -335,7 +364,7 @@ class Simulator:
                 
                 # Scan a shelf line
                 self.search_shelf()
-                print(f"Current quad is: {self.robot.quad}")
+                #print(f"Current quad is: {self.robot.quad}")
                 if self.robot.center in QUAD_END:
                     num_quad_finished += 1
                     print(f"Finished quad {self.robot.quad}")

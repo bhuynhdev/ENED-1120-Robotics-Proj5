@@ -153,8 +153,8 @@ class Robot:
         Determine quad number from coordinates:
         """
         x_robot, y_robot = self.center
-        print("Getting quad num", end=". ")
-        print(f"Center: {self.center}", end=". ")
+        # print("Getting quad num", end=". ")
+        # print(f"Center: {self.center}", end=". ")
         for quad in range(4):
             x_limit = QUAD_X_LIMIT[quad]
             y_limit = QUAD_Y_LIMIT[quad]
@@ -209,7 +209,7 @@ class Robot:
                 return True
         return False
 
-    def scan_barcode(self, field):
+    def scan_color_bit(self, field):
         """
         The color sensor can only scan one quare at a time
         Therefore, the 1/4th barcode returned will the of the same x-coor as the color sensor
