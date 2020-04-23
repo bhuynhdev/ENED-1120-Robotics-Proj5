@@ -56,7 +56,7 @@ class Simulator:
         self.robot.turn_right_90()
         self.backend.update_digital_board()
         self.frontend.render_surface(self.robot)
-        plt.pause(0.0001)
+        plt.pause(0.05)
 
     def robot_turn_left(self):
         """
@@ -65,7 +65,7 @@ class Simulator:
         self.robot.turn_left_90()
         self.backend.update_digital_board()
         self.frontend.render_surface(self.robot)
-        plt.pause(0.0001)
+        plt.pause(0.05)
 
     def robot_become_direction(self, direction_to_become):
         """
@@ -147,21 +147,28 @@ class Simulator:
         # while also turning to check if the box is still there.
         # After some back steps, the box is not detected any more, meaning the robot
         # has reached the leftmost edge of the box.
-        # Then it begin scanning in the scanning direction
+        # Then it begins scanning in the scanning direction
 
         # Backward until box is no longer seen
+        backward_steps = 0 # steps count to control how long robot has backwarded
         while self.robot.ultrasonic_detection(self.backend.board):
+            backward_steps += 1
             self.robot_turn_right()
             self.robot_backward(1)
             self.robot_turn_left()
-            plt.pause(0.02)
+            plt.pause(0.02)                     
         # When the box is no longer seen, the ultrasonic field is at the box's
         # leftmost edge. Now turn right, preparing to forward to scanning position
         self.robot_turn_right()
         # Visual Bug: If robot is going RIGHT, needs to forward 4 steps for
         # the colorsensor to align with the first barcode bit
         # If robot is going LEFT, only needs 3 steps
-        self.robot_forward(4 if self.robot.direction == RIGHT else 3)
+        # ALso, if it needs to go backward more than 4 steps, there are 2 boxes
+        # next to each other
+        if backward_steps > 3:
+            self.robot_forward(8 if self.robot.direction == RIGHT else 7)
+        else:
+            self.robot_forward(4 if self.robot.direction == RIGHT else 3)
         self.robot_turn_left()
         plt.pause(0.05)
 
@@ -348,7 +355,7 @@ if __name__ == "__main__":
 
     game.frontend.render_background(game.backend.box_list)
     game.frontend.render_surface(game.backend.robot)
-    plt.pause(5)
+    plt.pause(10)
 
 # print("Center", game.backend.robot.center)
 # print("Head", game.backend.robot.head)

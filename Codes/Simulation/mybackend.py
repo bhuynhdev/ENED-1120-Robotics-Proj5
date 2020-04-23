@@ -56,7 +56,7 @@ class Backend:
                 while True:
                     x1, x2 = (random.randrange(*region_range, 1)
                               for _ in range(2))
-                    if abs(x1 - x2) >= 8:
+                    if abs(x1 - x2) >= 4:
                         break
 
                 box_temp1 = Box((x1, y, x1 + 4, y + 4), random.choice(BARCODE))

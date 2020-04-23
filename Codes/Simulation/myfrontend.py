@@ -24,7 +24,7 @@ class InvisibleArtist:
         self.background = self.fig.add_axes([0.1, 0.1, 0.8, 0.8])
         self.background.set_xlim(0, 108)
         self.background.set_ylim(-12, 120)
-        self.background.set_title("My test")
+        self.background.set_title("Team 271")
 
         self.surface = self.background.twiny()
         self.surface.set_xticks([])
