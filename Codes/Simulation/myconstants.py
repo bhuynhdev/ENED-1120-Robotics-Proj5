@@ -69,3 +69,6 @@ QUAD_X_LIMIT = [(7, 53), (55, 103), (7, 53), (55, 103)]
 
 # Quad's starting direction:
 QUAD_START_DIRCT = [UP, UP, DOWN, DOWN]
+
+# Number of rocks wanted on field
+NUM_ROCKS = 5

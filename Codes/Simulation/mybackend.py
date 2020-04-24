@@ -7,6 +7,7 @@ import random
 from tuplemath import add_tuple, sub_tuple, mult_tuple, rev
 from myconstants import *
 from myobjects import Robot, Box
+from myrock import Rock, RockFactory
 
 
 # Digital respresentation
@@ -25,6 +26,7 @@ class Backend:
         self.col = 132      # Col cooresoinds to matplot y-axis
         self.board = self.create_empty_board()
         self.box_list = self.generate_all_boxes(target_barcode)
+        self.rock_list = RockFactory().randomize_rocks(NUM_ROCKS)
         self.robot = Robot()
         self.digitalize_boxes()
         self.update_digital_board()

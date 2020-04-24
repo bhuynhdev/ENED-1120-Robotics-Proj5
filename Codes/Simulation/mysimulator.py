@@ -133,11 +133,12 @@ class Simulator:
         # Update digital board
         self.backend.update_digital_board()
         # Frontend: Rerender both background and surface
-        self.frontend.render_background(self.backend.box_list)
+        self.frontend.render_background(self.backend.box_list, self.backend.rock_list)
         self.frontend.render_surface(self.robot)
         plt.pause(0.4)
 
-    def scan_full_barcode(self):
+    # More complicated and full-flex sequences of simulation below
+    def scan_full_barcode(self) -> list:
         """
         4-step sequence to scan the 4 color-bit of a barcode
         """
@@ -160,8 +161,7 @@ class Simulator:
             self.robot_forward(1)
             self.robot_turn_left()
         return full_code
-
-    # More complicated and full-flex sequences of simulation below
+    
     def backtrack_scanning(self):
         """
         Backtrack scanning algorithm when robot has met a box
@@ -188,6 +188,7 @@ class Simulator:
         # Therefore, activate "forward-tracking scan" sequence
         if backward_steps > 4:
             print("Adjacent boxes found")
+            # Forward 10 steps to get into a position that aligns with box II
             self.robot_turn_right()
             self.robot_forward(10)
             self.robot_turn_left()
@@ -379,15 +380,15 @@ class Simulator:
 
 
 if __name__ == "__main__":
-    target_barcode = BARCODE[1]
+    target_barcode = BARCODE[0]
     game = Simulator(HOME[1], target_barcode)
 
-    game.frontend.render_background(game.backend.box_list)
+    game.frontend.render_background(game.backend.box_list, game.backend.rock_list)
     game.frontend.render_surface(game.backend.robot)
-    plt.pause(10)
+    plt.pause(20)
 
-# print("Center", game.backend.robot.center)
-# print("Head", game.backend.robot.head)
-# print(game.backend.robot.rectangle_coor)
-# print(game.backend.robot.storage)
-# print(game.backend.robot.ultrasonic)
+    # print("Center", game.backend.robot.center)
+    # print("Head", game.backend.robot.head)
+    # print(game.backend.robot.rectangle_coor)
+    # print(game.backend.robot.storage)
+    # print(game.backend.robot.ultrasonic)

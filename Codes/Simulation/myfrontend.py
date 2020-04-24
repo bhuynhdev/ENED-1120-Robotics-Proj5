@@ -202,6 +202,20 @@ class InvisibleArtist:
             home_circle = patches.Circle(home_pos, 6, facecolor='lavender', edgecolor='violet')
             self.surface.add_patch(home_circle)
 
+    def draw_many_rocks(self, rock_list):
+        """
+        Draw all the rocks onto background
+        """
+        rock_patches = []
+        for rock in rock_list:
+            bottomleft = rock.bottomleft
+            square_rock = patches.Rectangle(
+                bottomleft, rock.size, rock.size, linewidth=1, facecolor="brown", edgecolor="black")
+            rock_patches.append(square_rock)
+
+        rock_patch_collection = PatchCollection(rock_patches, True)
+        self.background.add_collection(rock_patch_collection)
+
     def clear_background(self):
         """
         Empty the background, ready for redraw
@@ -211,12 +225,13 @@ class InvisibleArtist:
         for collection in self.background.collections:
             collection.remove()
 
-    def render_background(self, box_list):
+    def render_background(self, box_list, rock_list):
         """
         Render the background, including the boxes and the shelves
         """
         self.clear_background()
         self.draw_many_boxes(box_list)
+        self.draw_many_rocks(rock_list)
         self.draw_shelves()
         self.draw_boundaries()
         self.draw_homebases()
