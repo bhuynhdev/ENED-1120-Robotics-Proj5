@@ -164,6 +164,17 @@ class Robot:
         print("Quad 4")
         return 4  # return 4 otherwise (neutral hallway)
 
+    def get_dodging_direction(self):
+        """
+        Return the dodging direction when meeting a rock
+        """
+        current_col = self.center[0]
+        if (6 <= current_col <= 15 or 54 <= current_col <= 65):
+            return LEFT
+        else:
+            return RIGHT
+
+
     def step_forward(self):
         """
         Make robot step forward 1 step toward current direcion

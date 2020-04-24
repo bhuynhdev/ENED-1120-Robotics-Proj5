@@ -89,7 +89,15 @@ class Simulator:
             self.robot_become_direction(UP)
         elif yval_to_go < current_y:
             self.robot_become_direction(DOWN)
-        self.robot_forward(abs(yval_to_go - current_y))
+        while abs(self.robot.center[1] - yval_to_go) > 0:
+            # If robot encounter rocks
+            if self.robot.ultrasonic_detection(self.backend.board):
+                print("Rock encountered. Circumventing........")
+                self.circumvent_rock()
+                print("Circumvented")
+            # Else just go forward like normal
+            else:
+                self.robot_forward(1)
 
     def robot_goto_x(self, xval_to_go):
         """
@@ -136,6 +144,29 @@ class Simulator:
         self.frontend.render_background(self.backend.box_list, self.backend.rock_list)
         self.frontend.render_surface(self.robot)
         plt.pause(0.4)
+
+    def circumvent_rock(self):
+        """
+        Go around an obstacle
+        """
+        dodge_direction = self.robot.get_dodging_direction()
+        print(f"Doding direction is: {dodge_direction}")
+        original_direction = self.robot.direction
+        rock_size = 0
+        # Robot dodges to the side until there are no more rock blocking way
+        while self.robot.ultrasonic_detection(self.backend.board):
+            self.robot_become_direction(dodge_direction)
+            self.robot_forward(1)
+            rock_size += 1
+            self.robot_become_direction(original_direction)
+            plt.pause(1)
+        
+        # When there are no more rocks blocking way, robot does forward
+        # How many steps dodged, that many steps forward, because rock is square shape
+        self.robot_forward(rock_size)
+        # Robot turn back into original path
+        self.robot_become_direction(rev(dodge_direction))
+        self.robot_become_direction(original_direction)
 
     # More complicated and full-flex sequences of simulation below
     def scan_full_barcode(self) -> list:
@@ -232,7 +263,7 @@ class Simulator:
         """
         scanning_direction = self.get_scanning_direction()
         x_begin = self.robot.center[0]
-        x_end = x_begin + 38 * scanning_direction[0]
+        x_end = x_begin + 37 * scanning_direction[0]
 
 
         print(f"Scanning seq start with {x_begin}, {x_end}")
@@ -324,7 +355,7 @@ class Simulator:
         # and get to starting point
         if home_number in (0, 3): # If starting at A or D
             self.robot_turn_right()
-            self.robot_forward(4)
+            self.robot_forward(6)
             self.robot_turn_left()
         # If starting at B or C, robot turns left into hallway
         # and get to starting point

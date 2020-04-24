@@ -13,6 +13,7 @@ from myrock import Rock, RockFactory
 # Digital respresentation
 ROBOT = 15
 EDGE = 10
+ROCK = 11
 
 
 class Backend:
@@ -116,6 +117,17 @@ class Backend:
                 for i in range(4):
                     self.board[x - i][y - 1] = box.barcode[i]
 
+    def digitalize_rocks(self):
+        """
+        Digitalize rocks
+        """
+        for rock in self.rock_list:
+            x_max = rock.bottomleft[0] + rock.size
+            y_max = rock.bottomleft[1] + rock.size
+            for x in range(rock.bottomleft[0], x_max + 1):
+                for y in range(rock.bottomleft[1], y_max + 1):
+                    self.board[x][y + DISPLACEMENT] = ROCK
+
     def digitalize_robot(self):
         """
         Assign 5s indicating the robot onto the 2d Array
@@ -142,5 +154,7 @@ class Backend:
         self.board = self.create_empty_board()
         # Update boxes
         self.digitalize_boxes()
+        # Update rocks
+        self.digitalize_rocks()
         # Update the robot (since it is always in continuous movement)
         self.digitalize_robot()

@@ -60,7 +60,7 @@ WIDTH = 4
 HOME = [(6, -6), (102, -6), (6, 114), (102, 114)]
 
 # Quads' starting and ending locations:
-QUAD_START = [(11, 7), (59, 7), (49, 101), (97, 101)]
+QUAD_START = [(12, 7), (59, 7), (49, 101), (97, 101)]
 QUAD_END = [(9, 53), (57, 53), (51, 55), (99, 55)]
 
 # Quads' x and y limit
@@ -71,4 +71,30 @@ QUAD_X_LIMIT = [(7, 53), (55, 103), (7, 53), (55, 103)]
 QUAD_START_DIRCT = [UP, UP, DOWN, DOWN]
 
 # Number of rocks wanted on field
-NUM_ROCKS = 5
+NUM_ROCKS = 6
+
+# List of x limits for vertical hallways
+# Make sure generated rocks only lie in vertical hallways
+VERT_HALLWAY = [(7, 9), (48, 54), (54, 57), (96, 102)]
+
+# List of y limits for horizonal hallways
+# Make sure not too many rocks concentrated in 1 horizonal hallways
+HORI_HALLWAY = [(12, 21), (36, 45), (60, 69), (84, 99)]
+
+# A zone is an intersection between a vertical hallway and a horizontal hallway
+# Therefore, there are 16 zones. Zones are used to contain rocks, and
+# control that not too many rocks are in 1 zone
+def generate_zones():
+    """
+    Permuatate VERT_HALLWAY and HORI_HALLWAY to generate zones
+    """
+    # Intialize zones full of zero
+    num_vert_hall = len(VERT_HALLWAY)
+    num_hori_hall = len(HORI_HALLWAY)
+    zones = [[0 for x in range(num_vert_hall)] for x in range(num_hori_hall)]
+    for i in range(num_hori_hall):
+        for j in range(num_vert_hall):
+            zones[i][j] = [VERT_HALLWAY[j], HORI_HALLWAY[i]]
+    return zones
+
+ZONES = generate_zones()
