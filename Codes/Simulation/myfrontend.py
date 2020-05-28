@@ -20,16 +20,42 @@ class InvisibleArtist:
         """
         Intialize a blank canvas to draw on
         """
-        self.fig = plt.figure(figsize=(5.85, 7.15))
+        self.fig = plt.figure(figsize=(6, 6))
         self.background = self.fig.add_axes([0.1, 0.1, 0.8, 0.8])
-        self.background.set_xlim(0, 108)
+        self.background.set_xlim(0, 132)
         self.background.set_ylim(-12, 120)
         self.background.set_title("Team 271")
 
         self.surface = self.background.twiny()
         self.surface.set_xticks([])
-        self.surface.set_xlim(0, 108)
+        self.surface.set_xlim(0, 132)
         self.target_barcode = target_barcode
+
+    def write_IPS(self, robot):
+        """
+        Write IPS info to background
+        """        
+        self.surface.text(110, 90, f"{robot.center}")
+        # Distance to A
+        rA = distance_2points(robot.center, HOME[0])
+        self.surface.text(110, 76, f"{rA:.0f}")
+        # Distance to C
+        rC = distance_2points(robot.center, HOME[2])
+        self.surface.text(110, 66, f"{rC:.0f}")
+        # Distance to D
+        rD = distance_2points(robot.center, HOME[3])
+        self.surface.text(110, 56, f"{rD:.0f}")
+        # Calculated cooridnates using Blackboard algorithm
+        x_calc, y_calc = IPS_coordinates(rA, rC, rD)
+        self.surface.text(110, 41, f"({x_calc:.0f}, {y_calc:.0f})")
+
+    
+    def clear_IPS(self):
+        """
+        Clear text from surface
+        """
+        for text in self.surface.texts:
+            text.remove()
 
     def create_robot_body(self, robot):
         """
@@ -235,6 +261,14 @@ class InvisibleArtist:
         self.draw_shelves()
         self.draw_boundaries()
         self.draw_homebases()
+        self.background.text(110, 110, "IPS info")
+        self.background.text(110, 100, "Simulation")
+        self.background.text(110, 95, "coordinates")
+        self.background.text(110, 80, "Distance to A")
+        self.background.text(110, 70, "Distance to C")
+        self.background.text(110, 60, "Distance to D")
+        self.background.text(110, 50, "Calculated")
+        self.background.text(110, 45, "coordinates")
 
     def render_surface(self, robot):
         """
@@ -242,3 +276,5 @@ class InvisibleArtist:
         """
         self.clear_robot()
         self.draw_robot(robot)
+        self.clear_IPS()
+        self.write_IPS(robot)
