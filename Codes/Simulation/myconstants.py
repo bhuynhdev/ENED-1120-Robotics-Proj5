@@ -28,7 +28,7 @@ CLOCKWISE = {UP: RIGHT, RIGHT: DOWN, DOWN: LEFT, LEFT: UP}
 COUNTER_CLOCKWISE = {UP: LEFT, LEFT: DOWN, DOWN: RIGHT, RIGHT: UP}
 
 # BARCODE LIST: 4 barcode types. 1 = Black, 2 = White
-BARCODE = [(1, 2, 2, 2)]#, (1, 2, 1, 2), (1, 1, 2, 2), (1, 2, 2, 1)]
+BARCODE = [(1, 2, 2, 2), (1, 2, 1, 2), (1, 1, 2, 2), (1, 2, 2, 1)]
 
 
 # BTMLEFT_INDEX:
@@ -71,18 +71,18 @@ QUAD_X_LIMIT = [(7, 53), (55, 103), (7, 53), (55, 103)]
 QUAD_START_DIRCT = [UP, UP, DOWN, DOWN]
 
 # Number of rocks wanted on field
-NUM_ROCKS = 6
+NUM_ROCKS = 4
 
 # List of x limits for vertical hallways
 # Make sure generated rocks only lie in vertical hallways
-VERT_HALLWAY = [(7, 9), (48, 54), (54, 57), (96, 102)]
+VERT_HALLWAY = [(7, 9), (48, 57), (96, 102)]
 
 # List of y limits for horizonal hallways
 # Make sure not too many rocks concentrated in 1 horizonal hallways
-HORI_HALLWAY = [(12, 21), (36, 45), (60, 69), (84, 99)]
+HORI_HALLWAY = [(12, 21), (36, 45), (60, 69), (84, 94)]
 
 # A zone is an intersection between a vertical hallway and a horizontal hallway
-# Therefore, there are 16 zones. Zones are used to contain rocks, and
+# Therefore, there are 12 zones. Zones are used to contain rocks, and
 # control that not too many rocks are in 1 zone
 def generate_zones():
     """
