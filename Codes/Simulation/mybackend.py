@@ -6,7 +6,8 @@ robot's movement logic, data scanning, ultrasonic detection, box generation, etc
 import random
 from tuplemath import add_tuple, sub_tuple, mult_tuple, rev
 from myconstants import *
-from myobjects import Robot, Box
+from myrobot import Robot
+from mybox import Box
 from myrock import Rock, RockFactory
 
 
