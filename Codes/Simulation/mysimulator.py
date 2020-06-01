@@ -56,7 +56,7 @@ class Simulator:
         self.robot.turn_right_90()
         self.backend.update_digital_board()
         self.frontend.render_surface(self.robot)
-        plt.pause(0.05)
+        plt.pause(0.00001)
 
     def robot_turn_left(self):
         """
@@ -65,7 +65,7 @@ class Simulator:
         self.robot.turn_left_90()
         self.backend.update_digital_board()
         self.frontend.render_surface(self.robot)
-        plt.pause(0.05)
+        plt.pause(0.00001)
 
     def robot_become_direction(self, direction_to_become):
         """
@@ -184,7 +184,7 @@ class Simulator:
             self.robot_turn_right()
             self.robot_forward(1)
             self.robot_turn_left()
-            plt.pause(0.007)
+            plt.pause(0.00002)
         # Visual bug: If direction is DOWN (corresponsinding to LEFT scanning direction)
         # must go 1 more step (reason explained in another "Visual Bug" comment above)
         if self.robot.direction == DOWN:
@@ -211,7 +211,7 @@ class Simulator:
             self.robot_turn_right()
             self.robot_backward(1)
             self.robot_turn_left()
-            plt.pause(0.02)
+            plt.pause(0.0002)
         print(f"Back steps: {backward_steps}")                
           
         # If it needs to go backward more than 4 steps, there are 2 boxes
@@ -228,7 +228,7 @@ class Simulator:
                 self.robot_turn_right()
                 self.robot_forward(1)
                 self.robot_turn_left()
-                plt.pause(0.02)
+                plt.pause(0.0002)
             # When the box is no longer seen, the ultrasonic field is at the box's
             # rightmost edge. Now turn right, preparing to backward to scanning position
             # Visual Bug: If robot is going RIGHT, needs to backward 3 steps for
@@ -246,11 +246,11 @@ class Simulator:
             # If robot is going LEFT, only needs 3 steps
             self.robot_forward(4 if scanning_direction == RIGHT else 3)
         self.robot_turn_left()
-        plt.pause(0.05)
+        #plt.pause(0.05)
 
         full_code = self.scan_full_barcode()
         print(f"Barcode result: {full_code}")
-        plt.pause(0.5)
+        plt.pause(0.005)
         return full_code
 
     def search_shelf(self):
@@ -273,7 +273,7 @@ class Simulator:
                 box_detected = self.robot.ultrasonic_detection(self.backend.board)
                 if box_detected:
                     full_code = self.backtrack_scanning()
-                    plt.pause(0.007)
+                    #plt.pause(0.007)
                     # If barcode is correct, proceed to get into position to store box
                     if tuple(full_code) == self.target_code:
                         # Go a bit backward to place the robot right in middle of box
@@ -377,14 +377,16 @@ class Simulator:
         """
         game_finished = False
         num_quad_finished = 0
+        num_shelf_searched = 0
         starting_position = self.robot.center
         while not game_finished:
             # Depart from home
             self.escape_home()
-            plt.pause(0.5)
+            #plt.pause(0.005)
 
             # Make first search
             self.search_shelf()
+            num_shelf_searched += 1
             #print(f"Current quad is: {self.robot.quad}")
             # Continuously do subsequenct searches if necessary
             while self.robot.storage_empty and num_quad_finished < 4:
@@ -396,8 +398,9 @@ class Simulator:
                 
                 # Scan a shelf line
                 self.search_shelf()
+                num_shelf_searched += 1
                 #print(f"Current quad is: {self.robot.quad}")
-                if self.robot.center in QUAD_END:
+                if num_shelf_searched % 4 == 0:
                     num_quad_finished += 1
                     print(f"Finished quad {self.robot.quad}")
 
@@ -412,11 +415,11 @@ class Simulator:
 
 if __name__ == "__main__":
     target_barcode = BARCODE[0]
-    game = Simulator(HOME[1], target_barcode)
+    game = Simulator(HOME[0], target_barcode)
 
     game.frontend.render_background(game.backend.box_list, game.backend.rock_list)
     game.frontend.render_surface(game.backend.robot)
-    plt.pause(20)
+    plt.pause(500)
 
     # print("Center", game.backend.robot.center)
     # print("Head", game.backend.robot.head)
